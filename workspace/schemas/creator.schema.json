@@ -1,0 +1,45 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Creator Record",
+  "type": "object",
+  "required": ["id", "displayName", "region", "channels", "dedupKeys", "status"],
+  "properties": {
+    "id": { "type": "string" },
+    "displayName": { "type": "string" },
+    "region": { "type": "string" },
+    "channels": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["platform", "handle"],
+        "properties": {
+          "platform": { "type": "string" },
+          "handle": { "type": "string" },
+          "url": { "type": "string" },
+          "email": { "type": "string" },
+          "phone": { "type": "string" }
+        }
+      }
+    },
+    "dedupKeys": {
+      "type": "object",
+      "properties": {
+        "urls": { "type": "array", "items": { "type": "string" } },
+        "handles": { "type": "array", "items": { "type": "string" } },
+        "emails": { "type": "array", "items": { "type": "string" } },
+        "phones": { "type": "array", "items": { "type": "string" } }
+      }
+    },
+    "evidence": { "type": "array", "items": { "type": "string" } },
+    "scores": {
+      "type": "object",
+      "properties": {
+        "screening": { "type": "number" },
+        "evidenceCompleteness": { "type": "number" },
+        "conversionPotential": { "type": "number" }
+      }
+    },
+    "status": { "type": "string" },
+    "exclusionReason": { "type": "string" }
+  }
+}

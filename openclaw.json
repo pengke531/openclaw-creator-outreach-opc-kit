@@ -1,0 +1,119 @@
+{
+  "_package": {
+    "name": "creator-outreach-opc-agent-pack",
+    "mode": "incremental-import",
+    "version": "3.0"
+  },
+  "skills": {
+    "load": {
+      "extraDirs": [
+        "__DOMAIN_ROOT__/workspace/skills/shared"
+      ]
+    }
+  },
+  "agents": {
+    "defaults": {
+      "workspace": "__DOMAIN_ROOT__/workspace",
+      "memorySearch": {
+        "enabled": true
+      },
+      "subagents": {
+        "maxChildrenPerAgent": 4,
+        "maxSpawnDepth": 2,
+        "runTimeoutSeconds": 900,
+        "archiveAfterMinutes": 60,
+        "requireAgentId": true
+      }
+    },
+    "list": [
+      {
+        "id": "creator_manager",
+        "workspace": "__DOMAIN_ROOT__/workspace",
+        "identity": {
+          "name": "A01 Campaign Manager",
+          "emoji": "A01"
+        },
+        "tools": {
+          "profile": "messaging",
+          "alsoAllow": [
+            "read",
+            "write",
+            "sessions_spawn",
+            "subagents",
+            "memory_search",
+            "memory_get",
+            "memory_store",
+            "agents_list"
+          ]
+        },
+        "subagents": {
+          "allowAgents": [
+            "creator_scout",
+            "creator_connector",
+            "creator_analyst"
+          ],
+          "requireAgentId": true
+        }
+      },
+      {
+        "id": "creator_scout",
+        "workspace": "__DOMAIN_ROOT__/agents/scout",
+        "identity": {
+          "name": "A02 Scout",
+          "emoji": "A02"
+        },
+        "tools": {
+          "profile": "minimal",
+          "alsoAllow": [
+            "read",
+            "write",
+            "memory_search",
+            "memory_get",
+            "memory_store",
+            "web_search",
+            "web_fetch",
+            "browser"
+          ]
+        }
+      },
+      {
+        "id": "creator_connector",
+        "workspace": "__DOMAIN_ROOT__/agents/connector",
+        "identity": {
+          "name": "A03 Connector",
+          "emoji": "A03"
+        },
+        "tools": {
+          "profile": "minimal",
+          "alsoAllow": [
+            "read",
+            "write",
+            "memory_search",
+            "memory_get",
+            "memory_store"
+          ]
+        }
+      },
+      {
+        "id": "creator_analyst",
+        "workspace": "__DOMAIN_ROOT__/agents/analyst",
+        "identity": {
+          "name": "A04 Analyst",
+          "emoji": "A04"
+        },
+        "tools": {
+          "profile": "minimal",
+          "alsoAllow": [
+            "read",
+            "write",
+            "memory_search",
+            "memory_get",
+            "memory_store",
+            "web_search",
+            "web_fetch"
+          ]
+        }
+      }
+    ]
+  }
+}

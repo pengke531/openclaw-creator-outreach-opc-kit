@@ -1,0 +1,18 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Approval Packet",
+  "type": "object",
+  "required": ["id", "campaignId", "creatorId", "approvalType", "status"],
+  "properties": {
+    "id": { "type": "string" },
+    "campaignId": { "type": "string" },
+    "creatorId": { "type": "string" },
+    "approvalType": { "type": "string", "enum": ["outreach_release", "reply_send", "term_change", "exclusion_override"] },
+    "status": { "type": "string", "enum": ["pending", "approved", "rejected", "superseded"] },
+    "ownerDecision": { "type": "string" },
+    "sourceMessage": { "type": "string" },
+    "proposedAction": { "type": "string" },
+    "createdAt": { "type": "string" },
+    "decidedAt": { "type": "string" }
+  }
+}

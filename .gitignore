@@ -1,0 +1,11 @@
+.env
+.DS_Store
+Thumbs.db
+workspace/state/
+logs/
+canvas/
+devices/
+tasks/
+identity/
+*.bak
+*.clobbered.*
