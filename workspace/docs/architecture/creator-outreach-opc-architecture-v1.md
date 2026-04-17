@@ -1,30 +1,62 @@
-# Creator Outreach OPC Architecture v2
+# Creator Outreach OPC Architecture v3
 
 ## Core shape
 
 This package uses a two-layer topology:
 
-- one controller brain: Wangcai (`main`)
-- two narrow execution agents: `laicai`, `facai`
+- one controller brain: `main`
+- three narrow execution agents: `wangcai`, `laicai`, `facai`
 - one non-agent system layer: `registry`, `evidence`, `inbox`
+
+## Why this shape
+
+The client files clearly require four roles, but they mix real workflow needs with a few unsafe assumptions.
+
+What we keep:
+
+- one manager-facing controller
+- one scouting role
+- one outreach role
+- one ROI role
+- no direct employee-to-employee communication
+
+What we correct:
+
+- v1 should stay email-first, not multi-channel by default
+- silent boss pass can only apply to low-risk candidate release, not replies or terms
+- discovery and hard evidence should belong to a dedicated executor, not get mixed into manager chatter
+
+## What is borrowed from gstack
+
+This design borrows structure from gstack, not its software-delivery role names:
+
+1. one orchestrator
+2. explicit stage ownership
+3. output artifacts between stages
+4. specialist capability concentrated in the right executor
+5. controller reviews and routes instead of doing every step
 
 ## Topology
 
 ```mermaid
 flowchart LR
-  O["Owner / Boss"] --> W["main / Wangcai"]
-  W --> L["laicai / outreach execution"]
-  W --> F["facai / ROI review"]
-  W --> R["registry/"]
-  W --> E["evidence/"]
+  O["Owner / Boss"] --> M["main / manager"]
+  M --> W["wangcai / discovery + evidence"]
+  M --> L["laicai / outreach execution"]
+  M --> F["facai / ROI review"]
+  M --> R["registry/"]
+  W --> E["evidence/creators"]
   L --> I1["inbox/outreach-results"]
   F --> I2["inbox/roi-results"]
+  M --> A["registry/approvals + campaigns"]
 ```
 
-## Design decisions
+## Stage owners
 
-1. There is no middle manager agent. Wangcai is the only controller.
-2. Facebook page-by-page verification belongs to Wangcai because it is stateful, fragile, and evidence-heavy.
-3. Laicai and Facai never write formal records directly; they submit packets into the inbox layer.
-4. Registry writes, dedup decisions, and approvals all belong to Wangcai.
-5. Every phase ends with a deliverable artifact that the next phase can consume.
+1. intake and rule lock -> `main`
+2. discovery and evidence -> `wangcai`
+3. dedup and formal registration -> `main`
+4. outreach execution -> `laicai`
+5. reply approval -> `main`
+6. day4/day8 ROI review -> `facai`
+7. optimization updates -> `main`

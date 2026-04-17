@@ -2,7 +2,7 @@
   "_package": {
     "name": "creator-outreach-opc-agent-pack",
     "mode": "incremental-import",
-    "version": "4.0"
+    "version": "5.0"
   },
   "skills": {
     "load": {
@@ -18,7 +18,7 @@
         "enabled": true
       },
       "subagents": {
-        "maxChildrenPerAgent": 3,
+        "maxChildrenPerAgent": 4,
         "maxSpawnDepth": 2,
         "runTimeoutSeconds": 900,
         "archiveAfterMinutes": 60,
@@ -30,8 +30,8 @@
         "id": "main",
         "workspace": "__DOMAIN_ROOT__/workspace",
         "identity": {
-          "name": "Wangcai Main Controller",
-          "emoji": "WC"
+          "name": "Creator Outreach Manager",
+          "emoji": "MG"
         },
         "tools": {
           "profile": "messaging",
@@ -42,18 +42,37 @@
             "memory_search",
             "memory_get",
             "memory_store",
-            "agents_list",
-            "web_search",
-            "web_fetch",
-            "browser"
+            "agents_list"
           ]
         },
         "subagents": {
           "allowAgents": [
+            "wangcai",
             "laicai",
             "facai"
           ],
           "requireAgentId": true
+        }
+      },
+      {
+        "id": "wangcai",
+        "workspace": "__DOMAIN_ROOT__/agents/wangcai",
+        "identity": {
+          "name": "Wangcai Discovery Operator",
+          "emoji": "WC"
+        },
+        "tools": {
+          "profile": "minimal",
+          "alsoAllow": [
+            "read",
+            "write",
+            "memory_search",
+            "memory_get",
+            "memory_store",
+            "web_search",
+            "web_fetch",
+            "browser"
+          ]
         }
       },
       {
@@ -88,9 +107,7 @@
             "write",
             "memory_search",
             "memory_get",
-            "memory_store",
-            "web_search",
-            "web_fetch"
+            "memory_store"
           ]
         }
       }

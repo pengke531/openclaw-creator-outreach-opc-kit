@@ -10,6 +10,7 @@ if (-not (Test-Path $config)) {
 }
 
 $required = @(
+  "agents\\wangcai\\AGENTS.md",
   "agents\\laicai\\AGENTS.md",
   "agents\\facai\\AGENTS.md",
   "workspace\\AGENTS.md",

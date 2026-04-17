@@ -46,7 +46,8 @@
 
 ## 目标架构
 
-- `main` = 旺财，唯一主控
+- `main` = Manager，唯一主控
+- `wangcai` = 侦察与证据执行
 - `laicai` = 外联执行
 - `facai` = ROI/复盘
 
@@ -67,8 +68,8 @@
 1. 不下载外部仓库，不依赖仓库外的技能目录，不假设本机已有额外 skills。
 2. 先备份当前 ~/.openclaw/openclaw.json。
 3. 将当前仓库中的架构文件导入到 ~/.openclaw/domains/creator-outreach-opc。
-4. 将 openclaw.json 中定义的 main / laicai / facai 合并进当前用户配置。
-5. main 必须是旺财主控，允许调度 laicai 和 facai。
+4. 将 openclaw.json 中定义的 main / wangcai / laicai / facai 合并进当前用户配置。
+5. main 必须是唯一主控，允许调度 wangcai、laicai 和 facai。
 6. registry / evidence / inbox 目录必须完整存在。
 7. 导入后执行配置校验。
 8. 输出最终检查结果：目录是否存在、agent 是否写入、配置是否通过校验。
@@ -90,6 +91,7 @@
    - `workspace/inbox`
 3. `~/.openclaw/openclaw.json` 里存在：
    - `main`
+   - `wangcai`
    - `laicai`
    - `facai`
 4. `openclaw config validate` 通过

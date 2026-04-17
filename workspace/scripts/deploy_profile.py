@@ -92,7 +92,7 @@ def main() -> int:
     if main_agent:
         sub = main_agent.setdefault("subagents", {})
         allow = sub.setdefault("allowAgents", [])
-        for agent_id in ["laicai", "facai"]:
+        for agent_id in ["wangcai", "laicai", "facai"]:
             if agent_id not in allow:
                 allow.append(agent_id)
 

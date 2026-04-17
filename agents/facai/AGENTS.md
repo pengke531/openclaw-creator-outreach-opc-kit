@@ -19,6 +19,7 @@
 
 - do not fabricate performance when data is incomplete
 - do not command Laicai directly
+- do not command Wangcai directly
 - do not write into `workspace/registry`
 - do not label ROI without stating the basis
 

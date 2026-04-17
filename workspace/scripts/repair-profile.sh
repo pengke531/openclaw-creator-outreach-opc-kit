@@ -15,6 +15,7 @@ else
 fi
 
 for rel in \
+  "agents/wangcai/AGENTS.md" \
   "agents/laicai/AGENTS.md" \
   "agents/facai/AGENTS.md" \
   "workspace/AGENTS.md" \

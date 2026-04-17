@@ -1,15 +1,16 @@
-# Creator Outreach Memory Rules v2
+# Creator Outreach Memory Rules v3
 
 Use this file only for:
 
 - stable screening heuristics
 - reusable approval heuristics
 - current-cycle parameter changes that affect more than one creator
-- operator reminders about what Wangcai should optimize next
+- manager reminders about what next-week targeting or messaging should change
 
 Do not store here:
 
 - canonical creator records
+- evidence packets
 - outreach execution logs
 - reply packets
 - ROI snapshots
@@ -25,5 +26,5 @@ Priority order:
 
 1. `registry/` is the source of truth
 2. `evidence/` contains hard proof and page notes
-3. `inbox/` contains pending packets from subagents
+3. `inbox/` contains pending packets from execution agents
 4. `MEMORY.md` is only the lightweight policy layer

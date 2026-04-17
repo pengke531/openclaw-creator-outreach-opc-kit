@@ -11,18 +11,55 @@
 3. 让 Codex 读取本文件和仓库中的 agent / workspace 文件
 4. 由 Codex 或人工按本规范逐项手动配置
 
----
+## 1. 先说清楚真实需求
 
-## 1. 目标架构
+客户文件里真正要解决的不是“4 个会聊天的人设”，而是一条可审计的创作者商务流水线：
 
-最终架构必须是 **双层**，不是三层。
+- 找到符合标准的新创作者
+- 做证据充分的筛选
+- 做去重和正式建档
+- 批准后再外联
+- 收到回复后冻结审批
+- 在 Day4 / Day8 做 ROI 复盘
+- 把优化建议回写到下一轮筛选和话术
+
+所以架构必须服务于流程，而不是服务于角色扮演。
+
+## 2. 哪些客户表述要保留，哪些要修正
+
+保留：
+
+- 1 个主控，3 个执行
+- 员工禁止直接对话
+- 搜寻、外联、复盘要分开
+- 查重和资料库必须是硬要求
+- 回复审批必须阻塞
+
+修正：
+
+- `多渠道触达` 和 `目前仅邮箱` 冲突。V1 按 **Email-first** 执行，多渠道只保留为未来扩展。
+- `老板无异议默认通过` 只能用于低风险候选名单放行，不能用于回复、报价、条款。
+- ROI 不能只写“1.5 倍淘汰，3 倍合格”，必须由客户本地定义清楚公式、时间窗和成本口径。
+
+## 3. 为什么参考 gstack 后，正确架构是 1主3执行
+
+参考 gstack，应该借鉴的是组织方法，不是照抄软件开发角色：
+
+- 一个 orchestrator，不再叠主管层
+- 每个阶段只有一个 owner
+- 每个阶段都必须产出交付物
+- 重型能力放到专职执行层，而不是放在所有人身上
+- 主控负责批准、路由、整合，不负责所有细活
+
+因此，creator-outreach 的合理形态是：
 
 ```text
 老板 / 用户
   ↓
-main = 旺财
-  ├─ laicai = 来财
-  └─ facai = 发财
+main = Manager
+  ├─ wangcai = Discovery & Evidence
+  ├─ laicai = Outreach
+  └─ facai = ROI Review
 
 系统层：
 - workspace/registry
@@ -30,33 +67,27 @@ main = 旺财
 - workspace/inbox
 ```
 
-硬规则：
+这是 **双层架构**，不是三层。  
+因为只有：
 
-- `main` 是唯一主控
-- 不再存在中间“主管 agent”
-- `laicai` 和 `facai` 都只能被 `main` 调度
-- `laicai` 和 `facai` 不能互相调度
-- 正式资料库只能由 `main` 写入
+- 一层主控
+- 一层执行
 
----
+## 4. 正式 Agent 架构
 
-## 2. Agent 职责边界
-
-### `main` = 旺财
+### `main` = Manager
 
 唯一主控，负责：
 
 - 接收老板需求
 - 锁定 campaign brief 和 screening rules
-- 搜索候选 creator
-- 做 Facebook / 主页逐页核验
-- 做证据收集
-- 做去重裁决
+- 接收 `wangcai` 的 evidence packet
+- 做 dedup 最终裁决
 - 写正式 `registry`
-- 决定是否放行外联
+- 决定是否放行给 `laicai`
 - 审核回复
-- 回收来财和发财的结果
-- 输出最终名单和策略调整
+- 接收 `facai` 的 ROI packet
+- 输出最终名单、审批结果、优化策略
 
 绝对不能下放的权限：
 
@@ -64,32 +95,49 @@ main = 旺财
 - `registry/campaigns`
 - `registry/approvals`
 - `registry/indexes`
-- Facebook 硬核验
 - dedup 最终裁决
 - approval 最终裁决
 
-### `laicai` = 来财
+### `wangcai` = Discovery & Evidence Executor
 
-窄执行 agent，只负责：
+只负责：
 
-- 对已经批准的名单做外联
+- FB / INS creator discovery
+- 按规则做硬筛
+- page-by-page verification
+- 证据采集
+- 生成 evidence packet
+- 对已入库创作者做动态更新扫描
+
+禁止事项：
+
+- 不得外联
+- 不得直接进 `registry`
+- 不得做最终 dedup 裁决
+- 不得做 approval
+
+### `laicai` = Outreach Executor
+
+只负责：
+
+- 对已批准名单做 Email-first 外联
 - 跟进 cadence
-- 记录送达 / 失败 / 无回复 / 已回复
+- 记录送达、失败、退信、无回复、已回复
 - 收到回复后冻结
-- 输出 reply packet 到 `workspace/inbox/outreach-results`
+- 生成 reply packet
 
 禁止事项：
 
 - 不得搜人
-- 不得做 Facebook 核验
+- 不得做页面核验
 - 不得做 dedup 裁决
-- 不得写 `workspace/registry`
-- 不得在收到回复后自行继续推进
-- 不得自行改价格、条款、合作条件
+- 不得写 `registry`
+- 不得自行继续回复
+- 不得自行改报价和条款
 
-### `facai` = 发财
+### `facai` = ROI Review Executor
 
-窄执行 agent，只负责：
+只负责：
 
 - Day4 review
 - Day8 closeout review
@@ -97,26 +145,21 @@ main = 旺财
 - stop-loss suggestion
 - optimization packet
 
-输出位置：
-
-- `workspace/inbox/roi-results`
-
 禁止事项：
 
 - 不得搜人
-- 不得做外联
-- 不得写 `workspace/registry`
-- 不得直接改 campaign 正式状态
-- 不得直接指挥 `laicai`
+- 不得外联
+- 不得写 `registry`
+- 不得直接改正式 campaign 状态
+- 不得直接指挥 `wangcai` 或 `laicai`
 
----
-
-## 3. 系统层目录
+## 5. 系统层目录
 
 客户本地 `~/.openclaw/domains/creator-outreach-opc` 下，必须至少有：
 
 ```text
 agents/
+  wangcai/
   laicai/
   facai/
 
@@ -144,23 +187,22 @@ workspace/
 写权限规则：
 
 - `main` 可写 `workspace/registry/*`
-- `main` 可写 `workspace/evidence/*`
+- `wangcai` 写 `workspace/evidence/creators/*`
 - `laicai` 只写 `workspace/inbox/outreach-results/*`
 - `facai` 只写 `workspace/inbox/roi-results/*`
 
----
-
-## 4. OpenClaw 必须达到的配置结果
+## 6. OpenClaw 必须达到的配置结果
 
 客户本地 `~/.openclaw/openclaw.json` 最终要达到的核心结果不是“长得一样”，而是下面这些逻辑必须成立。
 
-### 4.1 必须存在的 agent
+### 6.1 必须存在的 agent
 
 - `main`
+- `wangcai`
 - `laicai`
 - `facai`
 
-### 4.2 `main` 必须具备的能力
+### 6.2 `main` 必须具备的能力
 
 - `read`
 - `write`
@@ -169,18 +211,29 @@ workspace/
 - `memory_get`
 - `memory_store`
 - `agents_list`
+
+### 6.3 `main` 的 subagent 限制
+
+`main.subagents.allowAgents` 必须至少包含：
+
+- `wangcai`
+- `laicai`
+- `facai`
+
+### 6.4 `wangcai` 的能力范围
+
+保留 discovery 和证据采集所需能力：
+
+- `read`
+- `write`
+- `memory_search`
+- `memory_get`
+- `memory_store`
 - `web_search`
 - `web_fetch`
 - `browser`
 
-### 4.3 `main` 的 subagent 限制
-
-`main.subagents.allowAgents` 必须至少包含：
-
-- `laicai`
-- `facai`
-
-### 4.4 `laicai` 的能力范围
+### 6.5 `laicai` 的能力范围
 
 保留窄能力即可：
 
@@ -190,13 +243,7 @@ workspace/
 - `memory_get`
 - `memory_store`
 
-不要默认给：
-
-- `browser`
-- 强搜索核验能力
-- 再调度其他 agent 的能力
-
-### 4.5 `facai` 的能力范围
+### 6.6 `facai` 的能力范围
 
 保留分析所需能力即可：
 
@@ -205,18 +252,8 @@ workspace/
 - `memory_search`
 - `memory_get`
 - `memory_store`
-- `web_search`
-- `web_fetch`
 
-不要默认给：
-
-- `browser`
-- 搜人主权限
-- 审批写权限
-
----
-
-## 5. 推荐的 `openclaw.json` 目标片段
+## 7. 推荐的 `openclaw.json` 目标片段
 
 下面是目标形态，客户本地可以按这个合并，而不是机械覆盖。
 
@@ -229,7 +266,7 @@ workspace/
         "enabled": true
       },
       "subagents": {
-        "maxChildrenPerAgent": 3,
+        "maxChildrenPerAgent": 4,
         "maxSpawnDepth": 2,
         "runTimeoutSeconds": 900,
         "archiveAfterMinutes": 60,
@@ -249,15 +286,29 @@ workspace/
             "memory_search",
             "memory_get",
             "memory_store",
-            "agents_list",
+            "agents_list"
+          ]
+        },
+        "subagents": {
+          "allowAgents": ["wangcai", "laicai", "facai"],
+          "requireAgentId": true
+        }
+      },
+      {
+        "id": "wangcai",
+        "workspace": "__DOMAIN_ROOT__/agents/wangcai",
+        "tools": {
+          "profile": "minimal",
+          "alsoAllow": [
+            "read",
+            "write",
+            "memory_search",
+            "memory_get",
+            "memory_store",
             "web_search",
             "web_fetch",
             "browser"
           ]
-        },
-        "subagents": {
-          "allowAgents": ["laicai", "facai"],
-          "requireAgentId": true
         }
       },
       {
@@ -284,9 +335,7 @@ workspace/
             "write",
             "memory_search",
             "memory_get",
-            "memory_store",
-            "web_search",
-            "web_fetch"
+            "memory_store"
           ]
         }
       }
@@ -295,14 +344,7 @@ workspace/
 }
 ```
 
-注意：
-
-- 如果客户本地已有 `main`，目标不是盲删，而是把它重构成这里定义的旺财主控形态
-- 如果客户本地已有别的 agent，不要自动删掉，但不要让它们破坏这套 creator 场景的主控关系
-
----
-
-## 6. 工作流交付逻辑
+## 8. 工作流交付逻辑
 
 ### 阶段 1：需求 intake
 
@@ -324,7 +366,17 @@ Owner：
 
 - `screening rules`
 
-### 阶段 3：取证与去重
+### 阶段 3：发现与取证
+
+Owner：
+
+- `wangcai`
+
+输出：
+
+- `creator evidence packet`
+
+### 阶段 4：去重与正式建档
 
 Owner：
 
@@ -332,10 +384,9 @@ Owner：
 
 输出：
 
-- `creator evidence packet`
 - `canonical creator record`
 
-### 阶段 4：放行外联
+### 阶段 5：外联放行
 
 Owner：
 
@@ -345,7 +396,7 @@ Owner：
 
 - `approved outreach batch`
 
-### 阶段 5：外联执行
+### 阶段 6：外联执行
 
 Owner：
 
@@ -355,7 +406,7 @@ Owner：
 
 - `workspace/inbox/outreach-results/*`
 
-### 阶段 6：回复审批
+### 阶段 7：回复审批
 
 Owner：
 
@@ -365,7 +416,7 @@ Owner：
 
 - `registry/approvals/*`
 
-### 阶段 7：ROI 复盘
+### 阶段 8：ROI 复盘
 
 Owner：
 
@@ -375,7 +426,7 @@ Owner：
 
 - `workspace/inbox/roi-results/*`
 
-### 阶段 8：策略回写
+### 阶段 9：策略回写
 
 Owner：
 
@@ -385,9 +436,7 @@ Owner：
 
 - 更新后的规则、状态、结论
 
----
-
-## 7. 状态机
+## 9. 状态机
 
 ### Creator 状态机
 
@@ -422,9 +471,7 @@ brief_created
 -> closed
 ```
 
----
-
-## 8. 手动配置时应该读取哪些仓库文件
+## 10. 手动配置时应该读取哪些仓库文件
 
 客户本地 Codex 或人工在手动配置时，优先读取这些文件：
 
@@ -432,37 +479,27 @@ brief_created
 - `workspace/AGENTS.md`
 - `workspace/MEMORY.md`
 - `workspace/knowledge/creator-memory-and-state-model.md`
-- `agents/laicai/AGENTS.md`
-- `agents/facai/AGENTS.md`
+- `agents/wangcai/*`
+- `agents/laicai/*`
+- `agents/facai/*`
 - `workspace/schemas/creator.schema.json`
 - `workspace/schemas/campaign.schema.json`
 - `workspace/schemas/approval.schema.json`
 
-如果只读一部分，很容易再次出现：
-
-- 层级错误
-- 权限边界错误
-- 资料库写入错误
-- 工作流断裂
-
----
-
-## 9. 手动配置检查清单
+## 11. 手动配置检查清单
 
 手动配置完成后，至少检查：
 
-1. `main` 是否真的是旺财主控
-2. `main` 是否只允许调度 `laicai` 和 `facai`
-3. `laicai` 是否没有正式库写权限
-4. `facai` 是否没有正式库写权限
-5. `workspace/registry`、`workspace/evidence`、`workspace/inbox` 是否完整
-6. Facebook 取证是否由 `main` 负责
+1. `main` 是否真的是唯一主控
+2. `main` 是否只允许调度 `wangcai`、`laicai`、`facai`
+3. `wangcai` 是否承担 discovery 和证据采集
+4. `laicai` 是否没有正式库写权限
+5. `facai` 是否没有正式库写权限
+6. `workspace/registry`、`workspace/evidence`、`workspace/inbox` 是否完整
 7. 回复事件是否会在 `laicai` 处冻结
 8. `openclaw config validate` 是否通过
 
----
-
-## 10. 给客户本地 Codex 的最短指令
+## 12. 给客户本地 Codex 的最短指令
 
 如果你只想给客户本地 Codex 一段最短要求，就用这段：
 
@@ -475,15 +512,16 @@ brief_created
 - workspace/AGENTS.md
 - workspace/MEMORY.md
 - workspace/knowledge/creator-memory-and-state-model.md
+- agents/wangcai/*
 - agents/laicai/*
 - agents/facai/*
 - workspace/schemas/*
 
 目标是：
-1. 将客户本地 creator-outreach 架构整理成双层结构：main=旺财，laicai=来财，facai=发财。
-2. 删除或绕开错误的中间主管层，不再保留三层编排。
-3. 保证 main 是唯一主控，负责正式 registry、evidence、approval。
-4. 保证 laicai 和 facai 只是窄执行 agent。
+1. 将客户本地 creator-outreach 架构整理成双层结构：main=Manager，wangcai=侦察执行，laicai=外联执行，facai=复盘执行。
+2. 保证只有 main 是主控，其他三个都是执行层。
+3. 保证 discovery 与 hard evidence 归 wangcai，外联归 laicai，ROI 归 facai。
+4. 保证 registry 正式写入只属于 main。
 5. 按本规范手动检查并修正客户本地 openclaw 配置、目录结构、职责边界和状态流转。
 6. 完成后输出：当前 agent 拓扑、关键权限、目录结构、仍存在的冲突点。
 ```

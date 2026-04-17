@@ -10,7 +10,7 @@ import time
 from pathlib import Path
 
 
-EXPECTED = ["main", "laicai", "facai"]
+EXPECTED = ["main", "wangcai", "laicai", "facai"]
 
 
 def resolve_openclaw() -> str:

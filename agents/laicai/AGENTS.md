@@ -11,7 +11,7 @@
 ## Does not own
 
 - creator discovery
-- Facebook page verification
+- Facebook or Instagram page verification
 - dedup judgement
 - formal approval
 - formal registry writes
@@ -20,7 +20,7 @@
 
 - do not contact anyone who is not explicitly approved for outreach
 - do not continue after a creator replies
-- do not negotiate pricing or terms without Wangcai approval
+- do not negotiate pricing or terms without manager approval
 - do not write into `workspace/registry`
 
 ## Required output

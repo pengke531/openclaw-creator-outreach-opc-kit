@@ -1,13 +1,15 @@
-# Creator Memory And State Model v2
+# Creator Memory And State Model v3
 
 ## Goal
 
 The system must support:
 
 - one controlling brain
-- hard evidence collection
+- one dedicated discovery and evidence executor
+- one dedicated outreach executor
+- one dedicated ROI executor
 - deterministic dedup
-- inbox-based subagent execution
+- inbox-based execution handoff
 - approval traceability
 - audit-ready lifecycle history
 
@@ -21,10 +23,10 @@ The system must support:
 
 ## Ownership
 
-- Wangcai owns `registry/*`
-- Wangcai owns `evidence/*`
-- Laicai owns `inbox/outreach-results/*`
-- Facai owns `inbox/roi-results/*`
+- `main` owns `registry/*`
+- `wangcai` owns evidence packet drafting into `evidence/creators/*`
+- `laicai` owns `inbox/outreach-results/*`
+- `facai` owns `inbox/roi-results/*`
 
 ## Registry folders
 
@@ -76,6 +78,15 @@ brief_created
 -> optimized
 -> closed
 ```
+
+## Artifact flow
+
+- `main` writes campaign brief and screening rules
+- `wangcai` writes evidence packets
+- `main` writes canonical creator records and approvals
+- `laicai` writes outreach result packets
+- `facai` writes ROI packets
+- `main` converts approved packets into official state changes
 
 ## Identity resolution signals
 
