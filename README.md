@@ -2,7 +2,7 @@
 
 给已经安装好 OpenClaw 的用户使用。
 
-这不是重装 OpenClaw 的项目，而是把一套 **旺财双层主控架构** 增量导入到现有 OpenClaw 中。
+这不是重装 OpenClaw 的项目，而是定义一套 **旺财双层主控架构**，供客户本地 Codex 或人工按仓库文件手动配置到现有 OpenClaw 中。
 
 ## 架构概览
 
@@ -16,19 +16,27 @@
 - `workspace/evidence`
 - `workspace/inbox`
 
+## 当前主路径
+
+优先阅读：
+
+- `MANUAL_CONFIGURATION_SPEC.md`
+
+这份文件现在是手动配置的总规范。
+
 ## 推荐交付方式
 
 优先采用：
 
 - 客户本地打开 Codex
 - Codex 进入这个仓库目录
-- Codex 只依据仓库里的架构文件和配置文件执行本地导入
+- Codex 只依据仓库里的架构文件和配置文件手动整理客户本地配置
 
 详细执行协议见：
 
 - `CUSTOMER_LOCAL_IMPORT.md`
 
-这条路径是当前仓库的主交付方式。`import.ps1` / `import.sh` 只保留为辅助入口，不再作为唯一交付依赖。
+这条路径是当前仓库的主交付方式。`import.ps1` / `import.sh` 只保留为辅助入口，不再作为推荐交付依赖。
 
 ## 别人怎么用
 

@@ -10,15 +10,15 @@ Preferred flow:
 
 1. Clone this repository on the customer machine
 2. Open Codex in this repository
-3. Ask Codex to perform the local import by following `CUSTOMER_LOCAL_IMPORT.md`
+3. Ask Codex to manually fix and configure the local architecture by following `MANUAL_CONFIGURATION_SPEC.md`
 
-That means the customer-local Codex should import the architecture from the repository files into the local OpenClaw profile, instead of depending only on a one-shot shell script.
+That means the customer-local Codex should read the repository architecture and manually align the local OpenClaw profile, instead of depending on a one-shot shell script.
 
 ## Customer-local Codex prompt
 
-Use the instruction block in `CUSTOMER_LOCAL_IMPORT.md` directly.
+Use the instruction block in `MANUAL_CONFIGURATION_SPEC.md` directly.
 
-## Auxiliary one-command import
+## Legacy auxiliary import
 
 ### Windows
 
