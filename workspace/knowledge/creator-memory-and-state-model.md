@@ -1,41 +1,30 @@
-# Creator Memory And State Model
+# Creator Memory And State Model v2
 
-## Purpose
+## Goal
 
-The memory and state system must support:
+The system must support:
 
-- durable business rules
-- creator identity resolution
-- campaign lifecycle visibility
+- one controlling brain
+- hard evidence collection
+- deterministic dedup
+- inbox-based subagent execution
 - approval traceability
-- low token cost
-- audit-friendly archival behavior
+- audit-ready lifecycle history
 
-## Layers
+## Storage layers
 
-- `L0 Constitution`
-- `L1 Role-local memory`
-- `L2 Shared policy memory`
-- `L3 Structured registry state`
-- `L4 External artifacts and evidence references`
+- `L0 Constitution` -> `workspace/AGENTS.md`
+- `L1 Shared policy memory` -> `workspace/MEMORY.md`
+- `L2 Formal registry` -> `workspace/registry/*`
+- `L3 Evidence store` -> `workspace/evidence/*`
+- `L4 Execution inbox` -> `workspace/inbox/*`
 
-## Rule of use
+## Ownership
 
-### Memory is for:
-
-- policies
-- stable heuristics
-- reusable patterns
-- current-cycle parameters that affect more than one creator
-
-### Registry is for:
-
-- creator records
-- dedup keys
-- campaign states
-- approval packets
-- ROI snapshots
-- exclusion reasons
+- Wangcai owns `registry/*`
+- Wangcai owns `evidence/*`
+- Laicai owns `inbox/outreach-results/*`
+- Facai owns `inbox/roi-results/*`
 
 ## Registry folders
 
@@ -43,35 +32,61 @@ The memory and state system must support:
 - `registry/campaigns`
 - `registry/approvals`
 - `registry/metrics`
+- `registry/indexes`
 
-## Core state transitions
+## Evidence folders
+
+- `evidence/creators`
+- `evidence/campaigns`
+
+## Inbox folders
+
+- `inbox/outreach-results`
+- `inbox/roi-results`
+
+## Creator state machine
 
 ```text
 discovered
--> evidence_gap | dedup_rejected | manager_review
--> owner_review
+-> evidence_collecting
+-> evidence_gap | screened_fail | screened_pass
+-> dedup_rejected | registered
 -> approved_for_outreach
--> contacted
--> delivery_failed | awaiting_reply
+-> outreach_in_progress
 -> reply_received
 -> reply_pending_approval
--> reply_approved
--> negotiation_in_progress
--> day4_watch | day4_stoploss
--> day8_qualified | day8_low_quality | excluded
+-> negotiation_active
+-> day4_review
+-> day4_stoploss | day8_review
+-> qualified | low_quality | excluded
+-> closed
+```
+
+## Campaign state machine
+
+```text
+brief_created
+-> rules_locked
+-> screening_active
+-> outreach_ready
+-> outreach_active
+-> reply_handling
+-> mid_review
+-> closeout_review
+-> optimized
 -> closed
 ```
 
 ## Identity resolution signals
 
 - canonical page url
-- platform handle
+- normalized platform handle
 - email
-- whatsapp / phone
+- phone / whatsapp
 - alternate handles
-- operator-confirmed alias links
+- manually confirmed alias edges
 
-## Confidentiality rule
+## Golden rule
 
-Store only the smallest operationally useful summary in memory. Detailed creator
-records live in registry files or referenced evidence sources.
+If a fact affects approval, outreach release, dedup, or ROI classification, it
+must live in `registry/` or `evidence/`, not only in free-form memory.

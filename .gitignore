@@ -11,3 +11,11 @@ tasks/
 identity/
 *.bak
 *.clobbered.*
+workspace/skills/shared/agent-reach/
+workspace/skills/shared/autoglm-browser-agent/
+workspace/skills/shared/clawdefender-1/
+workspace/skills/shared/gog/
+workspace/skills/shared/notion/
+workspace/skills/shared/search/
+workspace/skills/shared/tavily/
+workspace/skills/shared/web-scraping/

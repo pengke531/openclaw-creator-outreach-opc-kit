@@ -15,10 +15,8 @@ else
 fi
 
 for rel in \
-  "agents/manager/AGENTS.md" \
-  "agents/scout/AGENTS.md" \
-  "agents/connector/AGENTS.md" \
-  "agents/analyst/AGENTS.md" \
+  "agents/laicai/AGENTS.md" \
+  "agents/facai/AGENTS.md" \
   "workspace/AGENTS.md" \
   "workspace/MEMORY.md"
 do

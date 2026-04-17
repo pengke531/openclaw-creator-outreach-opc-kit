@@ -1,39 +1,41 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "title": "Campaign Record",
+  "title": "Campaign Record v2",
   "type": "object",
-  "required": ["id", "name", "goal", "state", "targets"],
+  "required": ["id", "name", "goal", "state", "targetCount", "platform", "geography"],
   "properties": {
     "id": { "type": "string" },
     "name": { "type": "string" },
     "goal": { "type": "string" },
+    "platform": { "type": "string" },
+    "geography": { "type": "string" },
+    "targetCount": { "type": "number" },
     "state": {
       "type": "string",
       "enum": [
-        "discovered",
-        "evidence_gap",
-        "dedup_rejected",
-        "manager_review",
-        "owner_review",
-        "approved_for_outreach",
-        "contacted",
-        "delivery_failed",
-        "awaiting_reply",
-        "reply_received",
-        "reply_pending_approval",
-        "reply_approved",
-        "negotiation_in_progress",
-        "day4_watch",
-        "day4_stoploss",
-        "day8_qualified",
-        "day8_low_quality",
-        "excluded",
+        "brief_created",
+        "rules_locked",
+        "screening_active",
+        "outreach_ready",
+        "outreach_active",
+        "reply_handling",
+        "mid_review",
+        "closeout_review",
+        "optimized",
         "closed"
       ]
     },
-    "targets": { "type": "array", "items": { "type": "string" } },
+    "creatorTargets": { "type": "array", "items": { "type": "string" } },
     "constraints": { "type": "array", "items": { "type": "string" } },
     "approvalLevel": { "type": "string" },
+    "cadence": {
+      "type": "object",
+      "properties": {
+        "maxFollowups": { "type": "number" },
+        "followupGapHours": { "type": "number" },
+        "stopConditions": { "type": "array", "items": { "type": "string" } }
+      }
+    },
     "ownerNotes": { "type": "string" },
     "lastUpdatedAt": { "type": "string" }
   }

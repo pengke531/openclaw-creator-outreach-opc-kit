@@ -8,4 +8,5 @@ if (-not $python) {
   throw "[creator-opc] python or python3 not found in PATH"
 }
 
-& $python.Source (Join-Path $PSScriptRoot "smoke_test.py")
+$targetRoot = if ($env:OPENCLAW_STATE_DIR) { $env:OPENCLAW_STATE_DIR } else { "$HOME\\.openclaw" }
+& $python.Source (Join-Path $PSScriptRoot "smoke_test.py") --target-root $targetRoot

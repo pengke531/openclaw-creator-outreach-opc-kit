@@ -1,6 +1,4 @@
-# Smoke Test
-
-Run these checks after additive deployment into the host OpenClaw environment.
+# Smoke Test v2
 
 ## 1. Structural checks
 
@@ -13,7 +11,6 @@ openclaw config validate
 
 ```powershell
 openclaw gateway probe
-Invoke-WebRequest http://127.0.0.1:18789/ -UseBasicParsing
 ```
 
 ## 3. Agent checks
@@ -24,28 +21,28 @@ openclaw agents list --json
 
 Confirm these agents exist:
 
-- `creator_manager`
-- `creator_scout`
-- `creator_connector`
-- `creator_analyst`
+- `main`
+- `laicai`
+- `facai`
 
-If the host has a base `main`, confirm that `main` can call `creator_manager`.
+## 4. System layer checks
 
-## 4. Domain state checks
+Confirm these folders exist:
 
-- confirm `~/.openclaw/domains/creator-outreach-opc/workspace/registry` exists
-- confirm `creator.schema.json`, `campaign.schema.json`, and `approval.schema.json` exist
-- confirm outreach templates exist
+- `~/.openclaw/domains/creator-outreach-opc/workspace/registry`
+- `~/.openclaw/domains/creator-outreach-opc/workspace/evidence`
+- `~/.openclaw/domains/creator-outreach-opc/workspace/inbox`
 
 ## 5. Policy checks
 
-- manager allowlist includes the three specialists
-- specialists do not have cross-agent subagent privileges
-- connector has no approval-bypassing send policy inside the domain pack itself
+- `main` can call only `laicai` and `facai`
+- `laicai` has no subagent privileges
+- `facai` has no subagent privileges
+- only Wangcai writes formal records
 
 ## 6. Functional prompts
 
-- ask `creator_manager` to classify a campaign brief and assign owners
-- ask `creator_scout` to produce a creator screening packet with `EVIDENCE_GAP` behavior
-- ask `creator_connector` to produce a reply-approval packet instead of sending a reply
-- ask `creator_analyst` to classify a creator on day 4 and day 8
+- ask `main` to turn a vague request into a campaign brief
+- ask `main` to produce a creator evidence packet with `EVIDENCE_GAP` behavior
+- ask `laicai` to produce a reply freeze packet instead of continuing
+- ask `facai` to produce a day4 review packet

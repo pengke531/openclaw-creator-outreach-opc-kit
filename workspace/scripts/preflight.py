@@ -13,8 +13,17 @@ def command_exists(name: str) -> bool:
     return shutil.which(name) is not None
 
 
+def resolve_openclaw() -> str | None:
+    for candidate in ("openclaw", "openclaw.cmd", "openclaw.exe"):
+        found = shutil.which(candidate)
+        if found:
+            return found
+    return None
+
+
 def try_openclaw_validate(target_root: Path) -> tuple[bool, str]:
-    if not command_exists("openclaw"):
+    openclaw_cmd = resolve_openclaw()
+    if not openclaw_cmd:
         return False, "openclaw missing"
     config_path = target_root / "openclaw.json"
     if not config_path.exists():
@@ -24,7 +33,7 @@ def try_openclaw_validate(target_root: Path) -> tuple[bool, str]:
         env["OPENCLAW_STATE_DIR"] = str(target_root)
         env["OPENCLAW_CONFIG_PATH"] = str(config_path)
         completed = subprocess.run(
-            ["openclaw", "config", "validate"],
+            [openclaw_cmd, "config", "validate"],
             capture_output=True,
             text=True,
             timeout=30,
@@ -49,7 +58,7 @@ def main() -> int:
     target_root = Path(args.target_root).expanduser().resolve()
 
     checks = {
-        "openclaw_in_path": command_exists("openclaw"),
+        "openclaw_in_path": resolve_openclaw() is not None,
         "python_in_path": command_exists("python") or command_exists("python3"),
         "package_root_exists": package_root.exists(),
         "target_root_parent_exists": target_root.parent.exists(),

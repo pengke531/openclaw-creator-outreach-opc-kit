@@ -1,44 +1,43 @@
-# Creator Outreach OPC Constitution
+# Creator Outreach OPC Constitution v2
 
-This package adds one creator-outreach domain into an existing OpenClaw host.
+This package is a two-layer system:
 
-Live topology:
+- `main` = Wangcai, the only controller
+- `laicai` = outreach execution
+- `facai` = ROI review and optimization
 
-- `creator_manager` = `A01 Campaign Manager`
-- `creator_scout` = `A02 Scout`
-- `creator_connector` = `A03 Connector`
-- `creator_analyst` = `A04 Analyst`
+System state is not an agent. It lives in:
 
-Host integration rules:
+- `workspace/registry`
+- `workspace/evidence`
+- `workspace/inbox`
 
-1. This package is additive. It must not replace the host's existing agents.
-2. If the host has a base `main`, that host `main` may call `creator_manager`.
-3. `creator_manager` is the only boss-facing and approval-bearing output agent.
-4. Specialists own specialist work. They do not talk cross-role by default and do not bypass manager review.
-5. Structured campaign state lives in `workspace/registry`, not only in free-form notes.
-6. Evidence outranks speed. Missing facts must be surfaced, not guessed.
-7. V1 outreach is `Email-first`; future channels may be added through explicit adapters, not implicit drift.
-8. Deduplication must treat creator identity as multi-signal: url, handle, email, and phone are all candidate joins.
-9. Inbound creator replies are always blocking events. `creator_connector` must stop and wait for approval.
-10. ROI feedback must flow back through the manager into next-cycle scout and connector parameters.
+## Core rules
 
-Primary task routes:
+1. Wangcai is the only boss-facing agent.
+2. Wangcai is the only agent allowed to write formal records into `registry/creators`, `registry/campaigns`, `registry/approvals`, and `registry/indexes`.
+3. Laicai and Facai are execution agents. They submit packets into `inbox/`; Wangcai decides what becomes official state.
+4. Facebook and other hard evidence collection belong to Wangcai by default. Do not push page-by-page verification into subagents.
+5. If evidence is incomplete, the output must be `EVIDENCE_GAP`, not a guess.
+6. Replies from creators are blocking events. Laicai must freeze and submit a packet instead of continuing.
+7. A creator is not eligible for outreach until Wangcai has verified identity, run dedup, and created a canonical creator record.
+8. Every non-trivial step must end with a deliverable artifact that the next step can consume.
 
-- outreach orchestration, approvals, owner communication, state advancement -> `creator_manager`
-- sourcing, evidence collection, scoring, dedup pre-check -> `creator_scout`
-- outbound emails, follow-up cadence, reply packet drafting -> `creator_connector`
-- day-4 and day-8 ROI review, stop-loss and optimization advice -> `creator_analyst`
+## Responsibility map
 
-Required handoff fields for non-trivial work:
+- intake, rule locking, discovery, page verification, dedup, formal registration, approval, final reporting -> `main`
+- approved outreach execution, cadence handling, reply packet drafting -> `laicai`
+- day4/day8 review, ROI interpretation, optimization packet drafting -> `facai`
+
+## Required handoff fields
 
 - `goal`
-- `campaign_or_batch`
-- `primary_owner`
+- `campaign_id`
+- `owner`
 - `constraints`
 - `deliverable`
 - `acceptance`
-- `evidence`
-- `state_impact`
+- `evidence_refs`
+- `state_change_request`
 - `approval_level`
-- `deadline_or_schedule`
-- `fallback`
+- `deadline`

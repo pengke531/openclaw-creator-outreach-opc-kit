@@ -1,65 +1,30 @@
-# Creator Outreach OPC Architecture v1
+# Creator Outreach OPC Architecture v2
 
-## Purpose
+## Core shape
 
-This architecture is designed for a creator-outreach operation using OpenClaw
-as a control plane with:
+This package uses a two-layer topology:
 
-- one manager
-- three specialist agents
-- one shared constitution
-- one structured registry and campaign state layer
-- explicit approval gates
-- email-first outbound delivery
-- no dependence on a heavyweight external orchestrator
+- one controller brain: Wangcai (`main`)
+- two narrow execution agents: `laicai`, `facai`
+- one non-agent system layer: `registry`, `evidence`, `inbox`
 
 ## Topology
 
 ```mermaid
 flowchart LR
-  O["Owner / Boss"] --> M["creator_manager / A01 Campaign Manager"]
-  M --> S["creator_scout / A02 Scout"]
-  M --> C["creator_connector / A03 Connector"]
-  M --> A["creator_analyst / A04 Analyst"]
-
-  S --> R1["registry/creators + dedup index"]
-  C --> R2["registry/campaigns + approvals"]
-  A --> R3["registry/metrics + ROI snapshots"]
-  M --> R4["state machine + execution gate"]
+  O["Owner / Boss"] --> W["main / Wangcai"]
+  W --> L["laicai / outreach execution"]
+  W --> F["facai / ROI review"]
+  W --> R["registry/"]
+  W --> E["evidence/"]
+  L --> I1["inbox/outreach-results"]
+  F --> I2["inbox/roi-results"]
 ```
-
-## Architectural layers
-
-### 1. OpenClaw overlay layer
-
-- agent registration
-- workspace injection
-- tool policy
-- subagent allowlist
-- additive config merge
-
-### 2. coordination layer
-
-- one manager owns routing, approval, escalation, and final reporting
-- specialists operate within strict role boundaries
-
-### 3. structured state layer
-
-- creator registry
-- campaign state records
-- approval records
-- metrics snapshots
-
-### 4. integration layer
-
-- host-provided model config
-- optional email provider credentials
-- optional search enrichment
 
 ## Design decisions
 
-1. OpenClaw is the orchestration plane, not the sole business database.
-2. Approval and deduplication are first-class state transitions, not prompt folklore.
-3. Specialists do not talk to each other directly; manager-mediated control is the default.
-4. V1 is email-first to keep operational complexity low while preserving future channel expansion.
-5. Optional skills and integrations should degrade gracefully instead of breaking install.
+1. There is no middle manager agent. Wangcai is the only controller.
+2. Facebook page-by-page verification belongs to Wangcai because it is stateful, fragile, and evidence-heavy.
+3. Laicai and Facai never write formal records directly; they submit packets into the inbox layer.
+4. Registry writes, dedup decisions, and approvals all belong to Wangcai.
+5. Every phase ends with a deliverable artifact that the next phase can consume.

@@ -1,12 +1,25 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "title": "Creator Record",
+  "title": "Creator Record v2",
   "type": "object",
-  "required": ["id", "displayName", "region", "channels", "dedupKeys", "status"],
+  "required": [
+    "canonicalId",
+    "displayName",
+    "region",
+    "platform",
+    "pageUrl",
+    "channels",
+    "dedupKeys",
+    "status",
+    "screeningDecision",
+    "evidenceRefs"
+  ],
   "properties": {
-    "id": { "type": "string" },
+    "canonicalId": { "type": "string" },
     "displayName": { "type": "string" },
     "region": { "type": "string" },
+    "platform": { "type": "string" },
+    "pageUrl": { "type": "string" },
     "channels": {
       "type": "array",
       "items": {
@@ -23,6 +36,7 @@
     },
     "dedupKeys": {
       "type": "object",
+      "required": ["urls", "handles", "emails", "phones"],
       "properties": {
         "urls": { "type": "array", "items": { "type": "string" } },
         "handles": { "type": "array", "items": { "type": "string" } },
@@ -30,16 +44,46 @@
         "phones": { "type": "array", "items": { "type": "string" } }
       }
     },
-    "evidence": { "type": "array", "items": { "type": "string" } },
-    "scores": {
+    "screeningMetrics": {
       "type": "object",
       "properties": {
-        "screening": { "type": "number" },
-        "evidenceCompleteness": { "type": "number" },
-        "conversionPotential": { "type": "number" }
+        "followerCount": { "type": "number" },
+        "recent10DayPostCount": { "type": "number" },
+        "latestReelViews": { "type": "number" },
+        "commentQualityScore": { "type": "number" }
       }
     },
-    "status": { "type": "string" },
-    "exclusionReason": { "type": "string" }
+    "evidenceRefs": { "type": "array", "items": { "type": "string" } },
+    "screeningDecision": {
+      "type": "string",
+      "enum": ["screened_pass", "screened_fail", "evidence_gap", "dedup_rejected"]
+    },
+    "status": {
+      "type": "string",
+      "enum": [
+        "discovered",
+        "evidence_collecting",
+        "evidence_gap",
+        "screened_pass",
+        "screened_fail",
+        "dedup_rejected",
+        "registered",
+        "approved_for_outreach",
+        "outreach_in_progress",
+        "reply_received",
+        "reply_pending_approval",
+        "negotiation_active",
+        "day4_review",
+        "day4_stoploss",
+        "day8_review",
+        "qualified",
+        "low_quality",
+        "excluded",
+        "closed"
+      ]
+    },
+    "notes": { "type": "string" },
+    "exclusionReason": { "type": "string" },
+    "updatedAt": { "type": "string" }
   }
 }

@@ -2,7 +2,23 @@
 
 Assumption: OpenClaw is already installed and working.
 
-## One-command user flow
+## Preferred delivery mode
+
+This repository is now the source of truth.
+
+Preferred flow:
+
+1. Clone this repository on the customer machine
+2. Open Codex in this repository
+3. Ask Codex to perform the local import by following `CUSTOMER_LOCAL_IMPORT.md`
+
+That means the customer-local Codex should import the architecture from the repository files into the local OpenClaw profile, instead of depending only on a one-shot shell script.
+
+## Customer-local Codex prompt
+
+Use the instruction block in `CUSTOMER_LOCAL_IMPORT.md` directly.
+
+## Auxiliary one-command import
 
 ### Windows
 
@@ -21,18 +37,20 @@ chmod +x ./import.sh
 ./import.sh
 ```
 
-## What the import command does
+## Imported topology
 
-- runs preflight
-- imports the creator-outreach domain into the user's existing OpenClaw state
-- merges the overlay config
-- validates config
-- runs smoke verification automatically when the gateway is already running
+- `main` -> Wangcai controller
+- `laicai` -> outreach executor
+- `facai` -> ROI analyst
 
-## If the gateway is not running
+## Imported storage layers
 
-Start it, then run the same import command again:
+- `workspace/registry`
+- `workspace/evidence`
+- `workspace/inbox`
 
-```bash
-openclaw gateway
+## Verify after import
+
+```powershell
+powershell -ExecutionPolicy Bypass -File .\verify-creator-outreach.ps1
 ```

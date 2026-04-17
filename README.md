@@ -2,7 +2,33 @@
 
 给已经安装好 OpenClaw 的用户使用。
 
-这不是重装 OpenClaw 的项目，而是把一套 Creator Outreach Agent 架构增量导入到现有 OpenClaw 中。
+这不是重装 OpenClaw 的项目，而是把一套 **旺财双层主控架构** 增量导入到现有 OpenClaw 中。
+
+## 架构概览
+
+- `main` = 旺财，唯一主控
+- `laicai` = 外联执行
+- `facai` = ROI 复盘
+
+系统层不是 agent：
+
+- `workspace/registry`
+- `workspace/evidence`
+- `workspace/inbox`
+
+## 推荐交付方式
+
+优先采用：
+
+- 客户本地打开 Codex
+- Codex 进入这个仓库目录
+- Codex 只依据仓库里的架构文件和配置文件执行本地导入
+
+详细执行协议见：
+
+- `CUSTOMER_LOCAL_IMPORT.md`
+
+这条路径是当前仓库的主交付方式。`import.ps1` / `import.sh` 只保留为辅助入口，不再作为唯一交付依赖。
 
 ## 别人怎么用
 
@@ -11,9 +37,17 @@
 - 对方已经装好 OpenClaw
 - `openclaw` 命令可以正常使用
 
-然后只做一件事：
+### 方式 A：客户本地 Codex 导入
 
-### Windows
+1. 让客户先把仓库拉到本地
+2. 在这个仓库目录打开 Codex
+3. 让 Codex 按 `CUSTOMER_LOCAL_IMPORT.md` 的要求执行本地导入
+
+建议直接把 `CUSTOMER_LOCAL_IMPORT.md` 里的整段执行要求发给客户本地 Codex。
+
+### 方式 B：辅助脚本导入
+
+#### Windows
 
 ```powershell
 git clone https://github.com/pengke531/openclaw-creator-outreach-opc-kit
@@ -21,7 +55,7 @@ cd openclaw-creator-outreach-opc-kit
 powershell -ExecutionPolicy Bypass -File .\import.ps1
 ```
 
-### macOS / Linux / WSL2
+#### macOS / Linux / WSL2
 
 ```bash
 git clone https://github.com/pengke531/openclaw-creator-outreach-opc-kit
@@ -30,51 +64,52 @@ chmod +x ./import.sh
 ./import.sh
 ```
 
-## 运行这一个命令后会发生什么
+## 导入后会得到什么
 
-`import` 会自动完成：
+`~/.openclaw/domains/creator-outreach-opc` 下会出现：
 
-- 预检
-- 增量导入架构
-- 合并 OpenClaw 配置
-- 创建 Creator Outreach 域目录
-- 注入 4 个 Agent
-- 验证配置
-- 如果 gateway 已在运行，自动做 smoke test
+- `workspace`
+- `agents/laicai`
+- `agents/facai`
 
-也就是说，对普通用户来说，默认只需要跑一次 `import`。
+`~/.openclaw/openclaw.json` 里会存在：
 
-## 导入成功后会得到什么
+- `main`
+- `laicai`
+- `facai`
 
-会新增这 4 个 Agent：
+说明：
 
-- `creator_manager`
-- `creator_scout`
-- `creator_connector`
-- `creator_analyst`
+- `main` 会被这套场景架构重定义为旺财主控
+- `laicai` 和 `facai` 是旺财唯一允许调度的子 agent
 
-会新增这个目录：
+## 如何判断导入成功
+
+检查：
 
 ```text
-~/.openclaw/domains/creator-outreach-opc
+C:\Users\你的用户名\.openclaw\domains\creator-outreach-opc
 ```
 
-## 如果导入时提示 gateway 没启动
+应该至少能看到：
 
-那就再执行：
+- `workspace/registry`
+- `workspace/evidence`
+- `workspace/inbox`
+- `agents/laicai`
+- `agents/facai`
 
-```bash
-openclaw gateway
+## 如果 gateway 还在启动
+
+出现 `GatewayRequestError: chat.history unavailable during gateway startup`
+时，不要先判断导入失败。
+
+先检查目录和 `openclaw.json` 是否已经落地；如果已落地，等 gateway 完全启动后再执行：
+
+```powershell
+powershell -ExecutionPolicy Bypass -File .\verify-creator-outreach.ps1
 ```
-
-然后重新运行刚才那个 `import` 命令即可。
-
-## 这套架构适合谁
-
-适合已经有 OpenClaw、现在只想增量导入一套创作者商务投放架构的人。
 
 ## 仓库地址
-
-仓库地址就是：
 
 `https://github.com/pengke531/openclaw-creator-outreach-opc-kit`

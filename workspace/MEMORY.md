@@ -1,32 +1,29 @@
-# Creator Outreach Memory Rules
+# Creator Outreach Memory Rules v2
 
-This domain keeps long-term memory intentionally compact.
+Use this file only for:
 
-## Durable memory belongs here
+- stable screening heuristics
+- reusable approval heuristics
+- current-cycle parameter changes that affect more than one creator
+- operator reminders about what Wangcai should optimize next
 
-- stable business rules
-- active market assumptions
-- approved screening parameters
-- approved outreach policy
-- approved ROI thresholds
-- reusable negotiation principles
+Do not store here:
 
-## Durable memory does not belong here
+- canonical creator records
+- outreach execution logs
+- reply packets
+- ROI snapshots
+- dedup source data
 
-- raw creator records
-- batch state
-- one-off approval packets
-- inbox transcripts
-- ROI snapshots for individual creators
+Those belong in:
 
-Those belong in `workspace/registry` or in referenced artifacts.
+- `workspace/registry`
+- `workspace/evidence`
+- `workspace/inbox`
 
-## Promotion rule
+Priority order:
 
-Only promote facts into long-term memory when they affect future campaigns
-beyond a single creator or batch.
-
-## Source of truth rule
-
-When `MEMORY.md` conflicts with structured records in `registry/`, the registry
-wins for operational state and `MEMORY.md` should be updated.
+1. `registry/` is the source of truth
+2. `evidence/` contains hard proof and page notes
+3. `inbox/` contains pending packets from subagents
+4. `MEMORY.md` is only the lightweight policy layer

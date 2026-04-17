@@ -16,6 +16,9 @@ if (-not $python) {
 Write-Host "[creator-opc] repo root:   $repoRoot"
 Write-Host "[creator-opc] host target: $TargetRoot"
 
+${env:OPENCLAW_STATE_DIR} = $TargetRoot
+${env:OPENCLAW_CONFIG_PATH} = Join-Path $TargetRoot "openclaw.json"
+
 Push-Location $repoRoot
 try {
   powershell -ExecutionPolicy Bypass -File ".\\workspace\\scripts\\bootstrap-profile.ps1"

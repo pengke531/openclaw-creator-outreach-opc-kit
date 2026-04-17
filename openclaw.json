@@ -2,7 +2,7 @@
   "_package": {
     "name": "creator-outreach-opc-agent-pack",
     "mode": "incremental-import",
-    "version": "3.0"
+    "version": "4.0"
   },
   "skills": {
     "load": {
@@ -18,7 +18,7 @@
         "enabled": true
       },
       "subagents": {
-        "maxChildrenPerAgent": 4,
+        "maxChildrenPerAgent": 3,
         "maxSpawnDepth": 2,
         "runTimeoutSeconds": 900,
         "archiveAfterMinutes": 60,
@@ -27,61 +27,41 @@
     },
     "list": [
       {
-        "id": "creator_manager",
+        "id": "main",
         "workspace": "__DOMAIN_ROOT__/workspace",
         "identity": {
-          "name": "A01 Campaign Manager",
-          "emoji": "A01"
+          "name": "Wangcai Main Controller",
+          "emoji": "WC"
         },
         "tools": {
           "profile": "messaging",
           "alsoAllow": [
             "read",
             "write",
-            "sessions_spawn",
             "subagents",
             "memory_search",
             "memory_get",
             "memory_store",
-            "agents_list"
+            "agents_list",
+            "web_search",
+            "web_fetch",
+            "browser"
           ]
         },
         "subagents": {
           "allowAgents": [
-            "creator_scout",
-            "creator_connector",
-            "creator_analyst"
+            "laicai",
+            "facai"
           ],
           "requireAgentId": true
         }
       },
       {
-        "id": "creator_scout",
-        "workspace": "__DOMAIN_ROOT__/agents/scout",
+        "id": "laicai",
+        "workspace": "__DOMAIN_ROOT__/agents/laicai",
         "identity": {
-          "name": "A02 Scout",
-          "emoji": "A02"
-        },
-        "tools": {
-          "profile": "minimal",
-          "alsoAllow": [
-            "read",
-            "write",
-            "memory_search",
-            "memory_get",
-            "memory_store",
-            "web_search",
-            "web_fetch",
-            "browser"
-          ]
-        }
-      },
-      {
-        "id": "creator_connector",
-        "workspace": "__DOMAIN_ROOT__/agents/connector",
-        "identity": {
-          "name": "A03 Connector",
-          "emoji": "A03"
+          "name": "Laicai Outreach Operator",
+          "emoji": "LC"
         },
         "tools": {
           "profile": "minimal",
@@ -95,11 +75,11 @@
         }
       },
       {
-        "id": "creator_analyst",
-        "workspace": "__DOMAIN_ROOT__/agents/analyst",
+        "id": "facai",
+        "workspace": "__DOMAIN_ROOT__/agents/facai",
         "identity": {
-          "name": "A04 Analyst",
-          "emoji": "A04"
+          "name": "Facai ROI Analyst",
+          "emoji": "FC"
         },
         "tools": {
           "profile": "minimal",

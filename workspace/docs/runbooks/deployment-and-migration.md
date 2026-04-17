@@ -2,8 +2,9 @@
 
 ## Safety objective
 
-This package must augment an existing OpenClaw host without replacing the host's
-base architecture.
+This package installs a scene-specific controller stack into an existing
+OpenClaw host. In this v2 package, `main` is intentionally redefined as
+Wangcai for the active creator-outreach scene.
 
 Target host root:
 
@@ -58,7 +59,9 @@ Portable asset set:
 - back up the host `openclaw.json` before merge
 - merge overlay config additively
 - preserve an existing host `.env`, host channels, and host provider choices
-- append outreach agents without deleting unrelated host agents
+- install the creator scene under `domains/creator-outreach-opc`
+- redefine `main` for this scene and add `laicai` + `facai`
+- preserve host channels, providers, and unrelated domain folders
 
 ## Rollback posture
 

@@ -1,59 +1,41 @@
-# Creator Workflows v1
+# Creator Workflows v2
 
-## Required workflow set
+## Phase 1: Intake
 
-This OPC must cover these recurring workflows without role ambiguity:
+- Owner: `main`
+- Output: `campaign brief`
 
-1. campaign brief intake
-2. creator sourcing and evidence collection
-3. deduplication and exclusion filtering
-4. owner review and release
-5. outreach delivery and failure handling
-6. inbound reply freeze and approval packet generation
-7. day-4 ROI review and stop-loss suggestion
-8. day-8 closeout and creator grading
-9. parameter feedback into the next cycle
+## Phase 2: Rule lock
 
-## Workflow details
+- Owner: `main`
+- Output: `screening rules`
 
-### 1. Campaign brief intake
+## Phase 3: Verification and dedup
 
-- Owner: `creator_manager`
-- Inputs: target geography, creator type, volume target, operating constraints
-- Outputs: task contract, batch id, screening config, approval level
+- Owner: `main`
+- Output: `creator evidence packet` + canonical creator record
 
-### 2. Creator sourcing
+## Phase 4: Outreach release
 
-- Owner: `creator_scout`
-- Inputs: screening config, category rules, minimum thresholds
-- Outputs: screened creator report, evidence set, scoring summary, evidence gaps
+- Owner: `main`
+- Output: approved outreach batch
 
-### 3. Outreach release
+## Phase 5: Outreach execution
 
-- Owner: `creator_manager`
-- Inputs: screened creator report, dedup outcome, owner preferences
-- Outputs: approved outreach list, blocked list, exclusions
+- Owner: `laicai`
+- Output: outreach result packet in `inbox/outreach-results`
 
-### 4. Delivery execution
+## Phase 6: Reply approval
 
-- Owner: `creator_connector`
-- Inputs: approved outreach list, email templates, cadence policy
-- Outputs: delivery report, failures, campaign state update
+- Owner: `main`
+- Output: approval record in `registry/approvals`
 
-### 5. Reply packet
+## Phase 7: ROI review
 
-- Owner: `creator_connector`
-- Inputs: creator reply, current campaign state, prior messages
-- Outputs: original creator text, proposed reply v1, risk note, approval request
+- Owner: `facai`
+- Output: ROI packet in `inbox/roi-results`
 
-### 6. ROI review
+## Phase 8: Optimization
 
-- Owner: `creator_analyst`
-- Inputs: day-4 or day-8 performance data
-- Outputs: ROI judgement, creator grading, stop-loss or optimization recommendation
-
-### 7. Parameter feedback
-
-- Owner: `creator_manager`
-- Inputs: analyst recommendation package
-- Outputs: updated screening parameters, updated outreach rules, next-cycle brief
+- Owner: `main`
+- Output: updated rules or campaign adjustments

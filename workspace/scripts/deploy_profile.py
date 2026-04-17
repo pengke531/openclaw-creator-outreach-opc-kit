@@ -92,8 +92,9 @@ def main() -> int:
     if main_agent:
         sub = main_agent.setdefault("subagents", {})
         allow = sub.setdefault("allowAgents", [])
-        if "creator_manager" not in allow:
-            allow.append("creator_manager")
+        for agent_id in ["laicai", "facai"]:
+            if agent_id not in allow:
+                allow.append(agent_id)
 
     config_path.write_text(json.dumps(current, ensure_ascii=False, indent=2), encoding="utf-8")
     print(f"[creator-opc] overlay imported into {domain_root}")
