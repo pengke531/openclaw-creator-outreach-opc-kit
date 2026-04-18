@@ -2,7 +2,13 @@
 
 给已经安装好 OpenClaw 的用户使用。
 
-这不是重装 OpenClaw 的项目，而是定义一套 **1主3执行** 的 creator outreach 架构，供客户本地 Codex 或人工按仓库文件手动配置到现有 OpenClaw 中。
+这套仓库现在可以直接提供一条可安装、可运行的 Instagram Nepal creator pipeline：
+
+- 安装 domain pack 到现有 OpenClaw
+- 自动挂载 shared skill
+- 自动安装 recurring cron
+- 支持手动跑批
+- 支持最终 3 列名单导出
 
 ## 当前正式架构
 
@@ -17,54 +23,45 @@
 - `workspace/evidence`
 - `workspace/inbox`
 
-## 这版为什么这样设计
+## Instagram Nepal 现成入口
 
-客户文件里真正需要的是：
+安装：
 
-- 1 个主控
-- 1 个发现与核验执行
-- 1 个外联执行
-- 1 个 ROI 复盘执行
+- Windows: `powershell -ExecutionPolicy Bypass -File .\install-creator-outreach.ps1`
+- Bash: `./install-creator-outreach.sh`
 
-这版架构参考了 gstack 的正确部分：
+手动跑一轮：
 
-- 一个 orchestrator
-- 分阶段 owner
-- 每阶段必须有交付物
-- 重能力交给专职执行层
+- Windows: `powershell -ExecutionPolicy Bypass -File .\run-instagram-nepal-batch.ps1`
+- Bash: `./run-instagram-nepal-batch.sh`
 
-而不是照搬 gstack 的软件开发角色。
+安装定时批处理：
 
-## 当前主路径
+- Windows: `powershell -ExecutionPolicy Bypass -File .\install-instagram-nepal-cron.ps1`
+- Bash: `./install-instagram-nepal-cron.sh`
 
-优先阅读：
+导出最终名单：
 
-- `MANUAL_CONFIGURATION_SPEC.md`
+- Windows: `powershell -ExecutionPolicy Bypass -File .\export-instagram-nepal-submissions.ps1 -Format markdown -OutputPath "$HOME\Desktop\instagram-nepal-submissions.md"`
 
-这份文件现在是手动配置的总规范。
+## 当前默认策略
 
-## 推荐交付方式
+- 平台：Instagram only
+- 地区：Nepal only
+- 逻辑批次：24
+- 内部微批次：8
+- 默认定时：每 12 小时一轮
+- 证据不足：`EVIDENCE_GAP`
+- 未完全达标：不得入库
+- 重复账号：只更新，不重复提交
 
-优先采用：
+## 关键路径
 
-1. 客户本地拉取这个仓库
-2. 在仓库目录打开 Codex
-3. 让 Codex 读取 `MANUAL_CONFIGURATION_SPEC.md`
-4. 让 Codex 按仓库文件手动整理客户本地配置
-
-## 核心仓库文件
-
-客户本地 Codex 至少应读取：
-
-- `MANUAL_CONFIGURATION_SPEC.md`
-- `openclaw.json`
-- `workspace/AGENTS.md`
-- `workspace/MEMORY.md`
-- `workspace/knowledge/creator-memory-and-state-model.md`
-- `agents/wangcai/*`
-- `agents/laicai/*`
-- `agents/facai/*`
-- `workspace/schemas/*`
+- 安装和运行说明：`workspace/docs/runbooks/install-and-run-instagram-nepal.md`
+- Skill：`workspace/skills/shared/instagram-nepal-creator-pipeline/SKILL.md`
+- 批处理与导出入口：`workspace/scripts/instagram_ops.py`
+- 注册与去重 helper：`workspace/scripts/instagram_registry_ops.py`
+- 手动配置总规范：`MANUAL_CONFIGURATION_SPEC.md`
 
 ## 仓库地址
 

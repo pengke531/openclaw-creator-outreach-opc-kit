@@ -1,28 +1,77 @@
 # Usage
 
-Assumption: OpenClaw is already installed and working.
+Assumption: OpenClaw is already installed and the gateway can run normally.
 
-## Preferred delivery mode
+## Fast path
 
-This repository is the source of truth.
+1. Clone this repository on the target machine
+2. Run the installer
+3. Let the installer import the domain pack and install the recurring cron
+4. Use the manual batch script or wait for cron
+5. Export the final list when the target delta is reached
 
-Preferred flow:
+## Install
 
-1. Clone this repository on the customer machine
-2. Open Codex in this repository
-3. Ask Codex to manually fix and configure the local architecture by following `MANUAL_CONFIGURATION_SPEC.md`
+Windows:
 
-That means the customer-local Codex should read the repository architecture and manually align the local OpenClaw profile, instead of depending on a one-shot shell script.
+```powershell
+powershell -ExecutionPolicy Bypass -File .\install-creator-outreach.ps1
+```
 
-## Target architecture
+Bash:
 
-- `main` -> manager
-- `wangcai` -> discovery and evidence executor
-- `laicai` -> outreach executor
-- `facai` -> ROI executor
+```bash
+./install-creator-outreach.sh
+```
 
-## System layers
+## Manual trigger
 
-- `workspace/registry`
-- `workspace/evidence`
-- `workspace/inbox`
+Windows:
+
+```powershell
+powershell -ExecutionPolicy Bypass -File .\run-instagram-nepal-batch.ps1
+```
+
+Bash:
+
+```bash
+./run-instagram-nepal-batch.sh
+```
+
+## Recurring trigger
+
+Windows:
+
+```powershell
+powershell -ExecutionPolicy Bypass -File .\install-instagram-nepal-cron.ps1
+```
+
+Bash:
+
+```bash
+./install-instagram-nepal-cron.sh
+```
+
+## Export
+
+Windows:
+
+```powershell
+powershell -ExecutionPolicy Bypass -File .\export-instagram-nepal-submissions.ps1 -Format markdown -OutputPath "$HOME\Desktop\instagram-nepal-submissions.md"
+```
+
+Use `-MarkSubmitted` only for the official final export.
+
+## Runtime path after install
+
+Installed domain root:
+
+- `~/.openclaw/domains/creator-outreach-opc`
+
+Important files after install:
+
+- `~/.openclaw/domains/creator-outreach-opc/workspace/skills/shared/instagram-nepal-creator-pipeline/SKILL.md`
+- `~/.openclaw/domains/creator-outreach-opc/workspace/scripts/instagram_ops.py`
+- `~/.openclaw/domains/creator-outreach-opc/workspace/scripts/instagram_registry_ops.py`
+- `~/.openclaw/domains/creator-outreach-opc/workspace/registry/indexes/instagram-nepal-index.json`
+- `~/.openclaw/domains/creator-outreach-opc/workspace/inbox/outreach-results/instagram-nepal-pending-submissions.json`

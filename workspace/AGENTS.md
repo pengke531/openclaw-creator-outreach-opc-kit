@@ -35,6 +35,7 @@ This package borrows the right things from gstack instead of copying its softwar
 8. `facai` may recommend stop-loss or optimization, but may not directly change formal campaign state.
 9. Every non-trivial step must end with a deliverable artifact that the next step can consume.
 10. No execution agent may directly command another execution agent.
+11. `main` may use the local `exec` tool only for domain-owned helper scripts inside `workspace/scripts/` and not as a general shell workflow.
 
 ## Responsibility map
 
@@ -42,6 +43,13 @@ This package borrows the right things from gstack instead of copying its softwar
 - discovery, hard filtering, page verification, evidence packet drafting, candidate update scanning -> `wangcai`
 - approved outreach execution, cadence handling, reply packet drafting -> `laicai`
 - day4/day8 review, ROI interpretation, stop-loss packet drafting, optimization packet drafting -> `facai`
+
+## Instagram Nepal runtime note
+
+For the Instagram Nepal pipeline:
+
+- `main` runs the batch contract, delegates discovery and verification to `wangcai`, and uses `workspace/scripts/instagram_registry_ops.py` plus `workspace/scripts/instagram_ops.py` when a helper script is needed.
+- `wangcai` does not write formal registry state directly.
 
 ## Required handoff fields
 

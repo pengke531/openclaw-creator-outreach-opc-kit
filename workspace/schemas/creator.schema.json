@@ -85,5 +85,27 @@
     "notes": { "type": "string" },
     "exclusionReason": { "type": "string" },
     "updatedAt": { "type": "string" }
+    ,
+    "registryView": {
+      "type": "object",
+      "properties": {
+        "creator_name": { "type": "string" },
+        "profile_url": { "type": "string" },
+        "followers": { "type": "string" },
+        "status": { "type": "string" },
+        "updated_at": { "type": "string" }
+      }
+    },
+    "instagramQualification": {
+      "type": "object",
+      "properties": {
+        "geography_status": { "type": "string" },
+        "persona_status": { "type": "string" },
+        "followers_status": { "type": "string" },
+        "geography_evidence": { "type": "string" },
+        "persona_evidence": { "type": "string" },
+        "followers_evidence": { "type": "string" }
+      }
+    }
   }
 }

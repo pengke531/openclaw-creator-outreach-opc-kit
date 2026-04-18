@@ -57,9 +57,18 @@ fi
 openclaw config validate
 
 GATEWAY_OK=0
-if openclaw gateway probe >/dev/null 2>&1; then
-  GATEWAY_OK=1
+if PROBE_JSON="$(openclaw gateway probe --json 2>/dev/null)"; then
+  echo "$PROBE_JSON"
+  if "$PYTHON_BIN" -c 'import json,sys; data=json.loads(sys.stdin.read() or "{}"); targets=data.get("targets", []); sys.exit(0 if any(t.get("connect", {}).get("ok") for t in targets if isinstance(t, dict)) else 1)' <<<"$PROBE_JSON"; then
+    GATEWAY_OK=1
+  fi
+fi
+
+if [ "$GATEWAY_OK" -eq 1 ]; then
   ./workspace/scripts/smoke-test.sh
+  if [ -z "${OPENCLAW_SKIP_DOMAIN_CRON:-}" ]; then
+    ./install-instagram-nepal-cron.sh
+  fi
 else
   echo "[creator-opc] gateway probe skipped or failed; import still completed."
 fi
@@ -80,5 +89,6 @@ else
   cat <<EOF
   2. Start OpenClaw normally: openclaw gateway
   3. Verify the domain: ./verify-creator-outreach.sh
+  4. Install recurring Instagram cron after the gateway is healthy: ./install-instagram-nepal-cron.sh
 EOF
 fi

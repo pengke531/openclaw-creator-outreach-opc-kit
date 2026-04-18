@@ -38,8 +38,15 @@ try {
 
   $gatewayOk = $false
   try {
-    openclaw gateway probe | Out-Host
-    $gatewayOk = $true
+    $probeJson = openclaw gateway probe --json
+    $probeJson | Out-Host
+    $probe = $probeJson | ConvertFrom-Json
+    foreach ($target in $probe.targets) {
+      if ($target.connect.ok -eq $true) {
+        $gatewayOk = $true
+        break
+      }
+    }
   }
   catch {
     Write-Host "[creator-opc] gateway probe skipped or failed; import still completed."
@@ -48,6 +55,9 @@ try {
   if ($gatewayOk) {
     try {
       powershell -ExecutionPolicy Bypass -File ".\\workspace\\scripts\\smoke-test.ps1"
+      if (-not $env:OPENCLAW_SKIP_DOMAIN_CRON) {
+        powershell -ExecutionPolicy Bypass -File ".\\install-instagram-nepal-cron.ps1"
+      }
     }
     catch {
       Write-Host "[creator-opc] automatic smoke test failed. Run verify-creator-outreach.ps1 after checking the gateway."
@@ -62,10 +72,12 @@ try {
   if (-not $gatewayOk) {
     Write-Host "  2. Start OpenClaw normally: openclaw gateway"
     Write-Host "  3. Verify the domain: powershell -ExecutionPolicy Bypass -File .\\verify-creator-outreach.ps1"
+    Write-Host "  4. Install recurring Instagram cron after the gateway is healthy: powershell -ExecutionPolicy Bypass -File .\\install-instagram-nepal-cron.ps1"
   }
   else {
     Write-Host "  2. Domain import and smoke test already passed."
     Write-Host "  3. Re-run verification any time: powershell -ExecutionPolicy Bypass -File .\\verify-creator-outreach.ps1"
+    Write-Host "  4. Run one manual batch any time: powershell -ExecutionPolicy Bypass -File .\\run-instagram-nepal-batch.ps1"
   }
 }
 finally {

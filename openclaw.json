@@ -38,6 +38,7 @@
           "alsoAllow": [
             "read",
             "write",
+            "exec",
             "subagents",
             "memory_search",
             "memory_get",

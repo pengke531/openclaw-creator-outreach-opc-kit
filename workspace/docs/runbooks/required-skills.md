@@ -6,6 +6,7 @@ This package separates skills into three buckets:
 
 The package installs and validates without these skills.
 
+- `instagram-nepal-creator-pipeline` (bundled in this package)
 - `search`
 - `tavily`
 - `agent-reach`
@@ -40,3 +41,14 @@ If a skill is missing:
 
 This is intentional. The package should degrade, not fail closed, when optional
 ecosystem tools are absent.
+
+## Runtime providers for the Instagram Nepal line
+
+Recommended configuration:
+
+- primary profile verification provider: `Apify`
+- fallback profile verification provider: `Bright Data`
+- search and browsing helpers: `agent-reach`, `autoglm-browser-agent`, `search`, `tavily`
+
+The bundled Instagram Nepal skill can run without third-party providers, but
+the operator should expect lower throughput and more manual verification work.

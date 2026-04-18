@@ -15,3 +15,17 @@ fi
 
 "$PYTHON_BIN" "$SCRIPT_DIR/workspace/scripts/preflight.py" --target-root "$TARGET_ROOT" --package-root "$SCRIPT_DIR"
 "$SCRIPT_DIR/workspace/scripts/smoke-test.sh"
+
+for path in \
+  "$SCRIPT_DIR/workspace/scripts/instagram_ops.py" \
+  "$SCRIPT_DIR/workspace/scripts/instagram_registry_ops.py" \
+  "$SCRIPT_DIR/workspace/skills/shared/instagram-nepal-creator-pipeline/SKILL.md" \
+  "$SCRIPT_DIR/install-instagram-nepal-cron.sh" \
+  "$SCRIPT_DIR/run-instagram-nepal-batch.sh" \
+  "$SCRIPT_DIR/export-instagram-nepal-submissions.sh"
+do
+  if [ ! -f "$path" ]; then
+    echo "[creator-opc] missing required Instagram Nepal runtime file: $path"
+    exit 1
+  fi
+done
