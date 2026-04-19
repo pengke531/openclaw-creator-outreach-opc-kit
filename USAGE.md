@@ -6,8 +6,8 @@ Assumption: OpenClaw is already installed and the gateway can run normally.
 
 1. Clone this repository on the target machine
 2. Run the installer
-3. Let the installer import the domain pack and install the recurring cron
-4. Use the manual batch script or wait for cron
+3. Open a new OpenClaw chat session and run `/workking`
+4. Or use the manual runtime script / recurring cron
 5. Export the final list when the target delta is reached
 
 ## Install
@@ -36,6 +36,19 @@ Bash:
 
 ```bash
 ./run-instagram-nepal-batch.sh
+```
+
+## Chat trigger
+
+```text
+/workking
+```
+
+Optional:
+
+```text
+/workking status
+/workking stop
 ```
 
 ## Recurring trigger
@@ -71,7 +84,10 @@ Installed domain root:
 Important files after install:
 
 - `~/.openclaw/domains/creator-outreach-opc/workspace/skills/shared/instagram-nepal-creator-pipeline/SKILL.md`
+- `~/.openclaw/domains/creator-outreach-opc/workspace/skills/shared/workking/SKILL.md`
 - `~/.openclaw/domains/creator-outreach-opc/workspace/scripts/instagram_ops.py`
+- `~/.openclaw/domains/creator-outreach-opc/workspace/scripts/instagram_runtime.py`
 - `~/.openclaw/domains/creator-outreach-opc/workspace/scripts/instagram_registry_ops.py`
 - `~/.openclaw/domains/creator-outreach-opc/workspace/registry/indexes/instagram-nepal-index.json`
+- `~/.openclaw/domains/creator-outreach-opc/workspace/registry/indexes/instagram-nepal-runtime-state.json`
 - `~/.openclaw/domains/creator-outreach-opc/workspace/inbox/outreach-results/instagram-nepal-pending-submissions.json`

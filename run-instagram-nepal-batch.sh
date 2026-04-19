@@ -15,4 +15,4 @@ else
   exit 1
 fi
 
-"$PYTHON_BIN" "$(cd "$(dirname "$0")" && pwd)/workspace/scripts/instagram_ops.py" manual-run --agent "$AGENT" --batch-size "$BATCH_SIZE" --micro-batch-size "$MICRO_BATCH_SIZE" --thinking "$THINKING"
+"$PYTHON_BIN" "$(cd "$(dirname "$0")" && pwd)/workspace/scripts/instagram_ops.py" start-runtime --agent "$AGENT" --batch-size "$BATCH_SIZE" --micro-batch-size "$MICRO_BATCH_SIZE" --thinking "$THINKING"

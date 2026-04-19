@@ -15,4 +15,4 @@ if (-not $python) {
   throw "python or python3 not found in PATH"
 }
 
-& $python.Source "$PSScriptRoot\workspace\scripts\instagram_ops.py" manual-run --agent $Agent --batch-size $BatchSize --micro-batch-size $MicroBatchSize --thinking $Thinking
+& $python.Source "$PSScriptRoot\workspace\scripts\instagram_ops.py" start-runtime --agent $Agent --batch-size $BatchSize --micro-batch-size $MicroBatchSize --thinking $Thinking

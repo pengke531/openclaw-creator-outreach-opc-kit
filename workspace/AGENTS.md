@@ -49,6 +49,7 @@ This package borrows the right things from gstack instead of copying its softwar
 For the Instagram Nepal pipeline:
 
 - `main` runs the batch contract, delegates discovery and verification to `wangcai`, and uses `workspace/scripts/instagram_registry_ops.py` plus `workspace/scripts/instagram_ops.py` when a helper script is needed.
+- `/workking` is the user-facing runtime entrypoint and maps to `workspace/scripts/instagram_runtime.py`.
 - `wangcai` does not write formal registry state directly.
 
 ## Required handoff fields

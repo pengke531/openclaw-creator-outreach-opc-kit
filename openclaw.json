@@ -11,6 +11,10 @@
       ]
     }
   },
+  "commands": {
+    "text": true,
+    "nativeSkills": "auto"
+  },
   "agents": {
     "defaults": {
       "workspace": "__DOMAIN_ROOT__/workspace",

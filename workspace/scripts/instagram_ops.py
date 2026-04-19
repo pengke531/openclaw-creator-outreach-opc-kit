@@ -15,6 +15,7 @@ from typing import Any
 ROOT = Path(__file__).resolve().parents[1]
 INDEX_PATH = ROOT / "registry" / "indexes" / "instagram-nepal-index.json"
 PENDING_SUBMISSIONS_PATH = ROOT / "inbox" / "outreach-results" / "instagram-nepal-pending-submissions.json"
+RUNTIME_SCRIPT_PATH = ROOT / "scripts" / "instagram_runtime.py"
 
 
 def utc_now() -> str:
@@ -63,6 +64,14 @@ def build_batch_message(batch_size: int, micro_batch_size: int) -> str:
     )
 
 
+def build_workking_message() -> str:
+    return (
+        "Invoke the workking skill now. "
+        "Treat it as /workking start. "
+        "Start the Instagram Nepal runtime and return only the runtime status summary."
+    )
+
+
 def agent_turn(*, agent: str, message: str, thinking: str) -> dict[str, Any]:
     openclaw_cmd = resolve_openclaw()
     completed = run_command(
@@ -94,7 +103,7 @@ def install_cron(*, every: str, agent: str, job_name: str, batch_size: int, micr
                 rm = run_command([openclaw_cmd, "cron", "remove", str(job["id"])])
                 require_ok(rm, f"remove existing cron job {job_name}")
 
-    message = build_batch_message(batch_size=batch_size, micro_batch_size=micro_batch_size)
+    message = build_workking_message()
     add = run_command(
         [
             openclaw_cmd,
@@ -115,6 +124,26 @@ def install_cron(*, every: str, agent: str, job_name: str, batch_size: int, micr
     )
     require_ok(add, "openclaw cron add")
     return {"ok": True, "job_name": job_name, "schedule": every, "agent": agent}
+
+
+def start_runtime(*, agent: str, batch_size: int, micro_batch_size: int, thinking: str) -> dict[str, Any]:
+    cmd = [
+        sys.executable,
+        str(RUNTIME_SCRIPT_PATH),
+        "start",
+        "--agent",
+        agent,
+        "--batch-size",
+        str(batch_size),
+        "--micro-batch-size",
+        str(micro_batch_size),
+        "--thinking",
+        thinking,
+    ]
+    completed = run_command(cmd, env=os.environ.copy())
+    require_ok(completed, "instagram runtime start")
+    stdout = completed.stdout.strip()
+    return json.loads(stdout) if stdout else {"ok": True}
 
 
 def export_pending(*, output: Path, fmt: str, mark_submitted: bool) -> dict[str, Any]:
@@ -176,6 +205,12 @@ def main() -> int:
     manual.add_argument("--micro-batch-size", type=int, default=8)
     manual.add_argument("--thinking", default="medium")
 
+    runtime = subparsers.add_parser("start-runtime")
+    runtime.add_argument("--agent", default="main")
+    runtime.add_argument("--batch-size", type=int, default=int(os.environ.get("INSTAGRAM_BATCH_SIZE", "24")))
+    runtime.add_argument("--micro-batch-size", type=int, default=int(os.environ.get("INSTAGRAM_MICRO_BATCH_SIZE", "8")))
+    runtime.add_argument("--thinking", default="medium")
+
     cron = subparsers.add_parser("install-cron")
     cron.add_argument("--agent", default="main")
     cron.add_argument("--job-name", default="Instagram Nepal Discovery")
@@ -195,6 +230,13 @@ def main() -> int:
             result = agent_turn(
                 agent=args.agent,
                 message=build_batch_message(batch_size=args.batch_size, micro_batch_size=args.micro_batch_size),
+                thinking=args.thinking,
+            )
+        elif args.command == "start-runtime":
+            result = start_runtime(
+                agent=args.agent,
+                batch_size=args.batch_size,
+                micro_batch_size=args.micro_batch_size,
                 thinking=args.thinking,
             )
         elif args.command == "install-cron":

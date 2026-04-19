@@ -1,6 +1,7 @@
 ---
 name: instagram-nepal-creator-pipeline
 description: Use when OpenClaw needs to continuously discover, verify, deduplicate, register, and prepare submission lists for Nepal Instagram personal creators. This skill is Instagram-only. It enforces hard gates for Nepal geography, personal creator identity, follower count >= 100000, evidence sufficiency, no pre-registration before full qualification, duplicate update without duplicate submission, and reply-triggered freeze handling.
+user-invocable: false
 ---
 
 # Instagram Nepal Creator Pipeline

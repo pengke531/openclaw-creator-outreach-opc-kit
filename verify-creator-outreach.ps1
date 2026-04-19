@@ -12,8 +12,10 @@ powershell -ExecutionPolicy Bypass -File "$PSScriptRoot\\workspace\\scripts\\smo
 
 $required = @(
   "$PSScriptRoot\\workspace\\scripts\\instagram_ops.py",
+  "$PSScriptRoot\\workspace\\scripts\\instagram_runtime.py",
   "$PSScriptRoot\\workspace\\scripts\\instagram_registry_ops.py",
   "$PSScriptRoot\\workspace\\skills\\shared\\instagram-nepal-creator-pipeline\\SKILL.md",
+  "$PSScriptRoot\\workspace\\skills\\shared\\workking\\SKILL.md",
   "$PSScriptRoot\\install-instagram-nepal-cron.ps1",
   "$PSScriptRoot\\run-instagram-nepal-batch.ps1",
   "$PSScriptRoot\\export-instagram-nepal-submissions.ps1"

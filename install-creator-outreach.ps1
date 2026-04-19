@@ -71,13 +71,15 @@ try {
   Write-Host "  1. Review optional integration template: $envPath"
   if (-not $gatewayOk) {
     Write-Host "  2. Start OpenClaw normally: openclaw gateway"
-    Write-Host "  3. Verify the domain: powershell -ExecutionPolicy Bypass -File .\\verify-creator-outreach.ps1"
-    Write-Host "  4. Install recurring Instagram cron after the gateway is healthy: powershell -ExecutionPolicy Bypass -File .\\install-instagram-nepal-cron.ps1"
+    Write-Host "  3. Open a new chat session once so /workking is visible."
+    Write-Host "  4. Verify the domain: powershell -ExecutionPolicy Bypass -File .\\verify-creator-outreach.ps1"
+    Write-Host "  5. Install recurring Instagram cron after the gateway is healthy: powershell -ExecutionPolicy Bypass -File .\\install-instagram-nepal-cron.ps1"
   }
   else {
     Write-Host "  2. Domain import and smoke test already passed."
-    Write-Host "  3. Re-run verification any time: powershell -ExecutionPolicy Bypass -File .\\verify-creator-outreach.ps1"
-    Write-Host "  4. Run one manual batch any time: powershell -ExecutionPolicy Bypass -File .\\run-instagram-nepal-batch.ps1"
+    Write-Host "  3. Open a new chat session once, then type /workking to start the runtime."
+    Write-Host "  4. Re-run verification any time: powershell -ExecutionPolicy Bypass -File .\\verify-creator-outreach.ps1"
+    Write-Host "  5. Run one manual runtime any time: powershell -ExecutionPolicy Bypass -File .\\run-instagram-nepal-batch.ps1"
   }
 }
 finally {

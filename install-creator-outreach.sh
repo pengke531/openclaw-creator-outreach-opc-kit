@@ -83,12 +83,14 @@ EOF
 if [ "$GATEWAY_OK" -eq 1 ]; then
   cat <<EOF
   2. Domain import and smoke test already passed.
-  3. Re-run verification any time: ./verify-creator-outreach.sh
+  3. Open a new chat session once, then type /workking to start the runtime.
+  4. Re-run verification any time: ./verify-creator-outreach.sh
 EOF
 else
   cat <<EOF
   2. Start OpenClaw normally: openclaw gateway
-  3. Verify the domain: ./verify-creator-outreach.sh
-  4. Install recurring Instagram cron after the gateway is healthy: ./install-instagram-nepal-cron.sh
+  3. Open a new chat session once so /workking is visible.
+  4. Verify the domain: ./verify-creator-outreach.sh
+  5. Install recurring Instagram cron after the gateway is healthy: ./install-instagram-nepal-cron.sh
 EOF
 fi

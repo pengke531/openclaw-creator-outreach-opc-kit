@@ -18,8 +18,10 @@ fi
 
 for path in \
   "$SCRIPT_DIR/workspace/scripts/instagram_ops.py" \
+  "$SCRIPT_DIR/workspace/scripts/instagram_runtime.py" \
   "$SCRIPT_DIR/workspace/scripts/instagram_registry_ops.py" \
   "$SCRIPT_DIR/workspace/skills/shared/instagram-nepal-creator-pipeline/SKILL.md" \
+  "$SCRIPT_DIR/workspace/skills/shared/workking/SKILL.md" \
   "$SCRIPT_DIR/install-instagram-nepal-cron.sh" \
   "$SCRIPT_DIR/run-instagram-nepal-batch.sh" \
   "$SCRIPT_DIR/export-instagram-nepal-submissions.sh"
